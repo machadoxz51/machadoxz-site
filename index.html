@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>machado</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --red: #e8001d;
+      --red-dim: rgba(232, 0, 29, 0.18);
+      --red-glow: rgba(232, 0, 29, 0.35);
+      --white: #ffffff;
+      --black: #000000;
+      --glass-bg: rgba(255, 255, 255, 0.04);
+      --glass-border: rgba(255, 255, 255, 0.10);
+      --glass-hover: rgba(255, 255, 255, 0.09);
+      --dot-color: rgba(255, 255, 255, 0.06);
+    }
+    html { scroll-behavior: smooth; }
+    body { background-color: #000; color: var(--white); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; overflow-x: hidden; position: relative; }
+    body::before { content: ''; position: fixed; inset: 0; background-image: radial-gradient(circle, var(--dot-color) 1px, transparent 1px); background-size: 22px 22px; z-index: 0; pointer-events: none; }
+    .blob { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.18; pointer-events: none; z-index: 0; animation: blobFloat 8s ease-in-out infinite alternate; }
+    .blob-red { width: 420px; height: 420px; background: var(--red); top: -120px; left: -100px; animation-delay: 0s; }
+    .blob-red2 { width: 300px; height: 300px; background: var(--red); bottom: 80px; right: -80px; animation-delay: 3s; opacity: 0.12; }
+    .blob-white { width: 250px; height: 250px; background: rgba(255,255,255,0.5); top: 40%; left: 50%; transform: translateX(-50%); animation-delay: 1.5s; opacity: 0.04; }
+    @keyframes blobFloat { 0% { transform: translateY(0px) scale(1); } 100% { transform: translateY(30px) scale(1.06); } }
+    .wrapper { position: relative; z-index: 1; width: 100%; max-width: 480px; padding: 60px 20px 50px; display: flex; flex-direction: column; align-items: center; gap: 0; }
+    .profile-ring { position: relative; width: 110px; height: 110px; margin-bottom: 18px; }
+    .profile-ring::before { content: ''; position: absolute; inset: -3px; border-radius: 50%; background: conic-gradient(var(--red) 0deg, transparent 120deg, var(--red) 240deg, transparent 360deg); animation: spinRing 4s linear infinite; z-index: 0; }
+    .profile-ring::after { content: ''; position: absolute; inset: -1px; border-radius: 50%; background: #000; z-index: 1; }
+    @keyframes spinRing { to { transform: rotate(360deg); } }
+    .profile-img { position: relative; z-index: 2; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: center top; display: block; }
+    .name { font-size: 1.75rem; font-weight: 700; letter-spacing: 0.08em; color: var(--white); text-transform: lowercase; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255,255,255,0.15); }
+    .quote { font-size: 0.78rem; font-weight: 300; color: rgba(255,255,255,0.45); text-align: center; letter-spacing: 0.04em; line-height: 1.8; max-width: 340px; margin-bottom: 38px; font-style: italic; min-height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+    .quote-text { display: block; }
+    .quote-author { color: var(--red); font-style: normal; font-weight: 500; display: block; margin-top: 6px; }
+    .section-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.18em; color: rgba(255,255,255,0.25); text-transform: lowercase; margin-bottom: 14px; align-self: flex-start; }
+    .links { width: 100%; display: flex; flex-direction: column; gap: 12px; margin-bottom: 40px; }
+    .link-card { position: relative; display: flex; align-items: center; gap: 16px; padding: 16px 20px; border-radius: 18px; background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); text-decoration: none; color: var(--white); overflow: hidden; cursor: pointer; transition: transform 0.25s cubic-bezier(.23,1,.32,1), background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; }
+    .link-card::before { content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent); transform: skewX(-20deg); transition: left 0.55s ease; pointer-events: none; }
+    .link-card:hover::before { left: 130%; }
+    .link-card::after { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 0%; background: var(--red); border-radius: 0 2px 2px 0; transition: height 0.3s ease; }
+    .link-card:hover::after { height: 60%; }
+    .link-card:hover { background: var(--glass-hover); border-color: rgba(232, 0, 29, 0.3); box-shadow: 0 0 20px var(--red-dim), 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08); transform: translateY(-2px) scale(1.01); }
+    .link-card:active { transform: translateY(0px) scale(0.99); }
+    .icon-wrap { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); transition: background 0.25s ease, border-color 0.25s ease; }
+    .link-card:hover .icon-wrap { background: var(--red-dim); border-color: rgba(232, 0, 29, 0.4); }
+    .icon-wrap svg { width: 20px; height: 20px; fill: var(--white); transition: fill 0.25s ease; }
+    .link-card:hover .icon-wrap svg { fill: var(--red); }
+    .card-text { display: flex; flex-direction: column; gap: 2px; }
+    .card-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; color: rgba(255,255,255,0.35); text-transform: lowercase; }
+    .card-handle { font-size: 0.95rem; font-weight: 600; letter-spacing: 0.02em; color: var(--white); text-transform: lowercase; }
+    .arrow { margin-left: auto; opacity: 0.2; transition: opacity 0.25s ease, transform 0.25s ease; flex-shrink: 0; }
+    .link-card:hover .arrow { opacity: 0.7; transform: translateX(4px); }
+    .arrow svg { width: 16px; height: 16px; fill: none; stroke: var(--white); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), var(--red-dim), rgba(255,255,255,0.08), transparent); margin: 8px 0 32px; }
+
+    .bio-card { width: 100%; padding: 22px 24px; border-radius: 20px; background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); position: relative; overflow: hidden; }
+    .bio-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent); }
+    .bio-intro { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; color: var(--red); text-transform: lowercase; margin-bottom: 10px; }
+    .bio-text { font-size: 0.88rem; font-weight: 300; line-height: 1.7; color: rgba(255,255,255,0.6); text-transform: lowercase; }
+    .bio-text strong { color: var(--white); font-weight: 600; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .tag { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.08em; padding: 5px 12px; border-radius: 100px; background: rgba(232, 0, 29, 0.1); border: 1px solid rgba(232, 0, 29, 0.25); color: rgba(255,255,255,0.6); text-transform: lowercase; transition: background 0.2s ease, color 0.2s ease; }
+    .tag:hover { background: rgba(232, 0, 29, 0.2); color: var(--white); }
+    .footer { margin-top: 36px; font-size: 0.6rem; font-weight: 400; letter-spacing: 0.1em; color: rgba(255,255,255,0.12); text-transform: lowercase; }
+    .glyph-lines { position: fixed; right: 18px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 6px; z-index: 0; pointer-events: none; }
+    .glyph-line { width: 2px; border-radius: 2px; background: rgba(255,255,255,0.07); animation: glyphPulse 2.5s ease-in-out infinite; }
+    .glyph-line:nth-child(1) { height: 40px; animation-delay: 0s; }
+    .glyph-line:nth-child(2) { height: 20px; animation-delay: 0.3s; }
+    .glyph-line:nth-child(3) { height: 60px; animation-delay: 0.6s; }
+    .glyph-line:nth-child(4) { height: 15px; animation-delay: 0.9s; }
+    .glyph-line:nth-child(5) { height: 35px; animation-delay: 1.2s; }
+    @keyframes glyphPulse { 0%, 100% { opacity: 0.07; } 50% { opacity: 0.22; background: var(--red); } }
+    .ripple { position: absolute; border-radius: 50%; background: rgba(232, 0, 29, 0.25); transform: scale(0); animation: rippleAnim 0.55s linear; pointer-events: none; }
+    @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
+    .profile-ring { animation: fadeDown 0.6s cubic-bezier(.23,1,.32,1) both; }
+    .name { animation: fadeDown 0.6s 0.1s cubic-bezier(.23,1,.32,1) both; }
+    .quote { animation: fadeDown 0.6s 0.18s cubic-bezier(.23,1,.32,1) both; }
+    .section-label { animation: fadeDown 0.5s 0.25s cubic-bezier(.23,1,.32,1) both; }
+    .link-card:nth-child(1) { animation: fadeUp 0.5s 0.3s cubic-bezier(.23,1,.32,1) both; }
+    .link-card:nth-child(2) { animation: fadeUp 0.5s 0.38s cubic-bezier(.23,1,.32,1) both; }
+    .link-card:nth-child(3) { animation: fadeUp 0.5s 0.46s cubic-bezier(.23,1,.32,1) both; }
+    .link-card:nth-child(4) { animation: fadeUp 0.5s 0.54s cubic-bezier(.23,1,.32,1) both; }
+    .bio-card { animation: fadeUp 0.5s 0.62s cubic-bezier(.23,1,.32,1) both; }
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-18px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    .clock-widget { position: fixed; top: 20px; right: 20px; background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); padding: 14px 18px; border-radius: 14px; z-index: 100; font-family: 'Courier New', monospace; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.06em; color: rgba(255,255,255,0.7); line-height: 1.5; box-shadow: 0 8px 32px rgba(0,0,0,0.2); animation: fadeDown 0.6s 0.2s cubic-bezier(.23,1,.32,1) both; }
+    .clock-time { font-size: 0.85rem; font-weight: 600; color: var(--white); margin-bottom: 4px; letter-spacing: 0.08em; }
+    .clock-date { font-size: 0.65rem; color: rgba(255,255,255,0.5); letter-spacing: 0.04em; text-transform: lowercase; }
+    .clock-widget::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(232, 0, 29, 0.2), transparent); border-radius: 14px 14px 0 0; }
+    @media (max-width: 400px) { .wrapper { padding: 48px 16px 40px; } .name { font-size: 1.5rem; } .glyph-lines { display: none; } .clock-widget { top: 12px; right: 12px; padding: 10px 14px; font-size: 0.65rem; } .clock-time { font-size: 0.75rem; } .clock-date { font-size: 0.55rem; } .quote { font-size: 0.7rem; } }
+  </style>
+</head>
+<body>
+  <div class="blob blob-red"></div>
+  <div class="blob blob-red2"></div>
+  <div class="blob blob-white"></div>
+  <div class="glyph-lines">
+    <div class="glyph-line"></div>
+    <div class="glyph-line"></div>
+    <div class="glyph-line"></div>
+    <div class="glyph-line"></div>
+    <div class="glyph-line"></div>
+  </div>
+  <div class="clock-widget">
+    <div class="clock-time" id="clockTime">00:00</div>
+    <div class="clock-date" id="clockDate">seg, 24 mar</div>
+  </div>
+  <div class="wrapper">
+    <div class="profile-ring">
+      <img src="profile.jpg" alt="machado" class="profile-img" />
+    </div>
+    <h1 class="name">machado</h1>
+    <div class="quote">
+      <span class="quote-text"></span>
+      <span class="quote-author"></span>
+    </div>
+    <div class="section-label">redes sociais</div>
+    <div class="links">
+      <a class="link-card" href="https://www.instagram.com/cfdomachadoxz?igsh=NDN4OWcydmhlYWkw" target="_blank" rel="noopener noreferrer">
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="2" y="2" width="20" height="20" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="6" r="1" fill="currentColor"/></svg></div>
+        <div class="card-text"><span class="card-label">instagram</span><span class="card-handle">cfdomachadoxz</span></div>
+        <div class="arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+      <a class="link-card" href="https://www.instagram.com/j.lucassm_?igsh=MWxydGJ5Y3FsZTFueQ==" target="_blank" rel="noopener noreferrer">
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="2" y="2" width="20" height="20" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="6" r="1" fill="currentColor"/></svg></div>
+        <div class="card-text"><span class="card-label">instagram</span><span class="card-handle">j.lucassm_</span></div>
+        <div class="arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+      <a class="link-card" href="https://www.tiktok.com/@machadoxz._?_r=1&_t=ZS-94xOBXImfjt" target="_blank" rel="noopener noreferrer">
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></div>
+        <div class="card-text"><span class="card-label">tiktok</span><span class="card-handle">@machadoxz._</span></div>
+        <div class="arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+      <a class="link-card" href="https://open.spotify.com/user/31rcraoj2jk2zylseoojyvuawfzy?si=BQiS2tGYRmmXY7_--cEhKw" target="_blank" rel="noopener noreferrer">
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.118-.961-.176-1.08-.66-.119-.48.176-.961.66-1.08 4.203-1.299 9.604-.558 13.224 1.58.361.22.559.771.3 1.22zm.12-3.36C15.24 9.6 8.82 9.21 5.16 10.56c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.429 11.85-.975 16.136 1.82.359.216.576.771.216 1.13-.361.36-.99.559-1.416.24z"/></svg></div>
+        <div class="card-text"><span class="card-label">spotify</span><span class="card-handle">machadoxz</span></div>
+        <div class="arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+    </div>
+    <div class="divider"></div>
+    <div class="bio-card">
+      <p class="bio-intro">sobre mim</p>
+      <p class="bio-text">
+        eu sou o <strong>machado</strong>, gosto de <strong>carros</strong>, <strong>fórmula 1</strong> e <strong>computadores</strong>
+      </p>
+      <div class="tags">
+        <span class="tag">carros</span>
+        <span class="tag">fórmula 1</span>
+        <span class="tag">computadores</span>
+      </div>
+    </div>
+    <p class="footer">machado · 2026</p>
+  </div>
+
+  <script>
+    const quotes = [
+      { text: "i'm slowly forgetting your face.", author: "machado (goat)" },
+      { text: "é que tá dando 3:33, e ela não me deixa ir embora, yeah", author: "matuê (os melhores)" },
+      { text: "fugi da cena numa STO tipo furiosos e velozes", author: "matuê (os melhores)" },
+      { text: "quem quer subir não tem medo de cair", author: "machado (goat)" },
+      { text: "se você desistir de um sonho você vai desistir dele", author: "machado (goat)" },
+      { text: "mentiroso quem disser que é outro, nós somos os melhores", author: "matuê (os melhores)" },
+      { text: "eu vou voltar no tempo, só pra reviver o que era antes", author: "matuê (antes)" },
+      { text: "quem dera eu pudesse voltar como era antes", author: "matuê (antes)" },
+      { text: "vou mandar um salve pra minha ex (salve)", author: "matuê e brandão (japonês)" },
+      { text: "você precisa pensar que é o melhor, se não for pra ser assim é melhor ficar em casa", author: "max verstappen (goat)" },
+      { text: "se vc começar a copiar as pessoas só poderá ser tão bom quanto elas. você não poderá ser melhor!", author: "max verstappen (goat)" },
+      { text: "vencer é o que importa. o resto é a consequência.", author: "ayrton senna (goat)" },
+      { text: "em busca da noite perfeita, ela quer conhecer essa onda, ela quer se envolver na onda, ela domina a vida insana", author: "brandão (noite perfeita)" },
+      { text: "julgamentos rasos nunca vão me definir", author: "brandão (comigo mesmo)" },
+      { text: "eu só quero fazer o meu máximo, foda-se o meu mínimo sou só um soldado lutando comigo mesmo (uh, uh)", author: "brandão (comigo mesmo)" }
+    ];
+
+    const specialQuote = {
+      text: "mulheres - com elas uma encrenca, mas sem elas não se pode viver.",
+      author: "ayrton senna (goat)"
+    };
+
+    function getQuoteOfTheDay() {
+      const today = new Date();
+      const dayOfMonth = today.getDate();
+      
+      if (dayOfMonth === 31) {
+        return specialQuote;
+      }
+
+      const year = today.getFullYear();
+      const month = today.getMonth();
+      const seed = year * 10000 + month * 100 + dayOfMonth;
+      const randomIndex = seed % quotes.length;
+      
+      return quotes[randomIndex];
+    }
+
+    function displayQuote() {
+      const quote = getQuoteOfTheDay();
+      const quoteText = document.querySelector('.quote-text');
+      const quoteAuthor = document.querySelector('.quote-author');
+      if (quoteText && quoteAuthor) {
+        quoteText.textContent = quote.text;
+        quoteAuthor.textContent = "— " + quote.author;
+      }
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const clockTime = document.getElementById('clockTime');
+      if (clockTime) {
+        clockTime.textContent = hours + ':' + minutes;
+      }
+      
+      const daysOfWeek = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'];
+      const months = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+      const dayName = daysOfWeek[now.getDay()];
+      const dayNum = String(now.getDate()).padStart(2, '0');
+      const monthName = months[now.getMonth()];
+      const clockDate = document.getElementById('clockDate');
+      if (clockDate) {
+        clockDate.textContent = dayName + ', ' + dayNum + ' ' + monthName;
+      }
+    }
+
+    displayQuote();
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    document.querySelectorAll('.link-card').forEach(card => {
+      card.addEventListener('click', function (e) {
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+        ripple.style.top  = (e.clientY - rect.top  - size / 2) + 'px';
+        this.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+
+    const lines = document.querySelectorAll('.glyph-line');
+    setInterval(() => {
+      const idx = Math.floor(Math.random() * lines.length);
+      lines[idx].style.background = 'var(--red)';
+      lines[idx].style.opacity = '0.6';
+      setTimeout(() => {
+        lines[idx].style.background = '';
+        lines[idx].style.opacity = '';
+      }, 400);
+    }, 700);
+
+  </script>
+</body>
+</html>
